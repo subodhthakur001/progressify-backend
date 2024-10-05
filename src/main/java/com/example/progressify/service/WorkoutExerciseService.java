@@ -1,6 +1,9 @@
 package com.example.progressify.service;
 
-import com.example.progressify.dto.*;
+import com.example.progressify.dto.response.workout.PreviousWorkoutDto;
+import com.example.progressify.dto.response.workout.SetDTO;
+import com.example.progressify.dto.response.workout.AddWorkoutExerciseDTO;
+import com.example.progressify.dto.response.workout.WorkoutResponseDTO;
 import com.example.progressify.model.*;
 import com.example.progressify.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,32 +16,37 @@ import java.util.stream.Collectors;
 @Service
 public class WorkoutExerciseService {
 
-    @Autowired
-    private WorkoutRepository workoutRepository;
+    private final WorkoutRepository workoutRepository;
+    private final ExerciseWorkoutRepository exerciseWorkoutRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final UserRepository userRepository;
+    private final MuscleRepository muscleRepository;
 
     @Autowired
-    private ExerciseWorkoutRepository exerciseWorkoutRepository;
+    public WorkoutExerciseService(WorkoutRepository workoutRepository,
+                                  ExerciseWorkoutRepository exerciseWorkoutRepository,
+                                  ExerciseRepository exerciseRepository,
+                                  UserRepository userRepository,
+                                  MuscleRepository muscleRepository){
+        this.workoutRepository = workoutRepository;
+        this.exerciseWorkoutRepository = exerciseWorkoutRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.userRepository = userRepository;
+        this.muscleRepository = muscleRepository;
 
-    @Autowired
-    private ExerciseRepository exerciseRepository;
+    }
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MuscleRepository muscleRepository;
-
-    public WorkoutResponseDTO addWorkout(WorkoutExerciseDTO workoutExerciseDTO){
+    public WorkoutResponseDTO addWorkout(AddWorkoutExerciseDTO workoutExerciseDTO){
         Exercise exercise = exerciseRepository.findById(workoutExerciseDTO.getId())
                             .orElseThrow(() -> new IllegalArgumentException("Invalid exercise id: " + workoutExerciseDTO.getId()));
 
-        User user = userRepository.findById(workoutExerciseDTO.getUser_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + workoutExerciseDTO.getUser_id()));
+        User user = userRepository.findById(workoutExerciseDTO.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + workoutExerciseDTO.getUserId()));
 
-        Muscle muscle = muscleRepository.findById(workoutExerciseDTO.getMuscle_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + workoutExerciseDTO.getMuscle_id()));
+        Muscle muscle = muscleRepository.findById(workoutExerciseDTO.getMuscleId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user id : " + workoutExerciseDTO.getMuscleId()));
 
-        if(workoutExerciseDTO.getWorkout_id() == null){
+        if(workoutExerciseDTO.getWorkoutId() == null){
             Workout workout = new Workout();
             workout.setUser(user);
             workout.setMuscle(muscle);
@@ -65,7 +73,8 @@ public class WorkoutExerciseService {
             );
 
         }else {
-            Workout workout = workoutRepository.findById(workoutExerciseDTO.getWorkout_id()).orElseThrow(()->new IllegalArgumentException("Invalid workout id: " + workoutExerciseDTO.getWorkout_id()));
+            Workout workout = workoutRepository.findById(workoutExerciseDTO.getWorkoutId()).orElseThrow(()
+                    ->new IllegalArgumentException("Invalid workout id: " + workoutExerciseDTO.getWorkoutId()));
             ExerciseWorkout exerciseWorkout = new ExerciseWorkout();
             exerciseWorkout.setWorkout(workout);
             exerciseWorkout.setExercise(exercise);
@@ -93,14 +102,14 @@ public class WorkoutExerciseService {
     public PreviousWorkoutDto getPreviousWorkoutInfo(Long userId, Long muscleId) {
 
         Optional<Workout> optionalWorkout = workoutRepository.findTopByUserIdAndMuscleIdOrderByCreatedAtDesc(userId,muscleId);
-        if (!optionalWorkout.isPresent()) {
+        if (optionalWorkout.isEmpty()) {
             return null;
         }
         Workout workout = optionalWorkout.get();
 
         List<ExerciseWorkout> exerciseWorkouts = exerciseWorkoutRepository.findByWorkout(workout);
 
-        List<WorkoutExerciseDTO> workoutExerciseDTOs = exerciseWorkouts.stream()
+        List<AddWorkoutExerciseDTO> workoutExerciseDTOs = exerciseWorkouts.stream()
                 .map(exerciseWorkout -> {
                     List<SetDTO> setDTOs = exerciseWorkout.getSets().stream()
                             .map(set -> new SetDTO(
@@ -109,7 +118,7 @@ public class WorkoutExerciseService {
                             ))
                             .collect(Collectors.toList());
 
-                    return new WorkoutExerciseDTO(
+                    return new AddWorkoutExerciseDTO(
                             exerciseWorkout.getExercise().getId(),
                             workout.getUser().getId(),
                             workout.getMuscle().getId(),
@@ -119,11 +128,10 @@ public class WorkoutExerciseService {
                 })
                 .collect(Collectors.toList());
 
-        PreviousWorkoutDto previousWorkoutDto = new PreviousWorkoutDto(
+        return new PreviousWorkoutDto(
                 workout.getId(),
                 workoutExerciseDTOs
         );
-        return previousWorkoutDto;
     }
 }
 

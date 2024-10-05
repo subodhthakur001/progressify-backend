@@ -15,17 +15,21 @@ import java.util.List;
 @Service
 public class MuscleService {
 
-    @Autowired
-    private MuscleRepository muscleRepository;
+    private final MuscleRepository muscleRepository;
 
-    public void addMuscle(AddMuscleRequestDTO addMuscleRequestDTO){
+    @Autowired
+    public MuscleService(MuscleRepository muscleRepository){
+        this.muscleRepository = muscleRepository;
+    }
+
+    public Muscle addMuscle(AddMuscleRequestDTO addMuscleRequestDTO){
         if(muscleRepository.findByName(addMuscleRequestDTO.getName()) != null){
             throw new DuplicateEntityException("muscle already exists " + addMuscleRequestDTO.getName());
         }
         Muscle muscle = new Muscle();
         muscle.setName(addMuscleRequestDTO.getName());
         muscle.setUser(addMuscleRequestDTO.getUser_id());
-        muscleRepository.save(muscle);
+        return muscleRepository.save(muscle);
     }
 
     public Muscle updateMuscle(UpdateMuscleRequestDTO updateMuscleRequestDTO){
@@ -34,11 +38,10 @@ public class MuscleService {
         if(updateMuscleRequestDTO.getName() != null){
             muscleToUpdate.setName(updateMuscleRequestDTO.getName());
         }
-        return muscleRepository.save(muscleToUpdate);
+         return muscleRepository.save(muscleToUpdate);
     }
 
     public List<Muscle> muscleList(){
-        List<Muscle> muscles = muscleRepository.findAll();
-        return muscles;
+        return muscleRepository.findAll();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.progressify.controller;
 
-import com.example.progressify.dto.MailTestRequestDTO;
+import com.example.progressify.dto.request.mail.MailTestRequestDTO;
 import com.example.progressify.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

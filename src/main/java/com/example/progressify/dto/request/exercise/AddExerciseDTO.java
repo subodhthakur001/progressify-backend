@@ -1,6 +1,7 @@
 package com.example.progressify.dto.request.exercise;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddExerciseDTO {
+    @JsonProperty("muscle_id")
     private Long muscleId;
     private String name;
 }

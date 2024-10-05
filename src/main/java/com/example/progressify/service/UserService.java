@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
+    private final UserRepository userRepository;
+    @Autowired
+    public UserService (UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public boolean saveNewUser(SignUpRequest signUpRequest) {
+    public void saveNewUser(SignUpRequest signUpRequest) {
         if (userRepository.findByUserName(signUpRequest.getUsername()) != null) {
             throw new DuplicateEntityException("Username already exists: " + signUpRequest.getUsername());
         }
@@ -28,7 +31,6 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
             user.setRole(signUpRequest.getRole());
             userRepository.save(user);
-            return true;
         } catch (Exception e) {
             log.error("Error while saving the user: " + e.getMessage());
             throw new RuntimeException("Error while saving the user: " + e.getMessage());

@@ -15,10 +15,15 @@ import java.util.List;
 @Service
 public class ExerciseService {
 
+    private final ExerciseRepository exerciseRepository;
+    private final MuscleRepository muscleRepository;
+
     @Autowired
-    private ExerciseRepository exerciseRepository;
-    @Autowired
-    private MuscleRepository muscleRepository;
+    public ExerciseService(ExerciseRepository exerciseRepository,
+                        MuscleRepository muscleRepository){
+        this.exerciseRepository = exerciseRepository;
+        this.muscleRepository = muscleRepository;
+    }
 
     public List<Exercise> getExerciseByMuscleId(Long id){
         return exerciseRepository.findByMuscleId(id);

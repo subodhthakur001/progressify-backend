@@ -1,9 +1,10 @@
 package com.example.progressify.controller;
 
-import com.example.progressify.dto.PreviousWorkoutDto;
-import com.example.progressify.dto.WorkoutExerciseDTO;
-import com.example.progressify.dto.WorkoutResponseDTO;
-import com.example.progressify.response.ApiResponse;
+import com.example.progressify.constants.ServiceConstant;
+import com.example.progressify.dto.response.workout.PreviousWorkoutDto;
+import com.example.progressify.dto.response.workout.AddWorkoutExerciseDTO;
+import com.example.progressify.dto.response.workout.WorkoutResponseDTO;
+import com.example.progressify.dto.response.commonresponse.ApiResponse;
 import com.example.progressify.service.WorkoutExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,16 +23,16 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse> addWorkout(@RequestBody WorkoutExerciseDTO workoutExerciseDTO){
-        WorkoutResponseDTO workoutResponseDTO = workoutExerciseService.addWorkout(workoutExerciseDTO);
-        ApiResponse response = new ApiResponse("workout saved Successfully" ,workoutResponseDTO);
+    public ResponseEntity<ApiResponse> addWorkout(@RequestBody AddWorkoutExerciseDTO addworkoutExerciseDTO){
+        WorkoutResponseDTO workoutResponseDTO = workoutExerciseService.addWorkout(addworkoutExerciseDTO);
+        ApiResponse response = new ApiResponse(ServiceConstant.SAVE_MESSAGE,workoutResponseDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/previous-workout/{user_id}")
     public ResponseEntity<ApiResponse> getPreviousWorkoutInfo(@RequestParam("userId") Long userId, @RequestParam("muscleId") Long muscleId){
         PreviousWorkoutDto previousWorkoutDto = workoutExerciseService.getPreviousWorkoutInfo(userId,muscleId);
-        ApiResponse response = new ApiResponse("Previous workout fetched successfully !" ,previousWorkoutDto);
+        ApiResponse response = new ApiResponse(ServiceConstant.LIST_MESSAGE,previousWorkoutDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

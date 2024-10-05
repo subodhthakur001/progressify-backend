@@ -1,4 +1,4 @@
-package com.example.progressify.response;
+package com.example.progressify.dto.response.commonresponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
