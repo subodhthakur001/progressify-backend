@@ -26,6 +26,7 @@ public class MuscleService {
         if(muscleRepository.findByName(addMuscleRequestDTO.getName()) != null){
             throw new DuplicateEntityException("muscle already exists " + addMuscleRequestDTO.getName());
         }
+        
         Muscle muscle = new Muscle();
         muscle.setName(addMuscleRequestDTO.getName());
         muscle.setUser(addMuscleRequestDTO.getUser_id());
