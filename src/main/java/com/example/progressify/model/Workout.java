@@ -33,7 +33,7 @@ public class Workout {
 
     @OneToMany(mappedBy = "workout",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    List<Exercise_Workout> exerciseWorkoutList;
+    List<ExerciseWorkout> exerciseWorkoutList;
 
 
 

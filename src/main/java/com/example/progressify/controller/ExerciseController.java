@@ -1,6 +1,5 @@
 package com.example.progressify.controller;
 
-import com.example.progressify.dto.ExerciseDTO;
 import com.example.progressify.dto.request.exercise.AddExerciseDTO;
 import com.example.progressify.model.Exercise;
 import com.example.progressify.response.ApiResponse;

@@ -22,7 +22,7 @@ public class WorkoutSet {
     @ManyToOne
     @JoinColumn(name = "exercise_workout_id",nullable = false)
     @JsonBackReference
-    private Exercise_Workout workout;
+    private ExerciseWorkout workout;
 
     private int weight;
 

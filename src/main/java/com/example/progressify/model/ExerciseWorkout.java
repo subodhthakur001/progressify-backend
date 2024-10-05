@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exercise_Workout {
+public class ExerciseWorkout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

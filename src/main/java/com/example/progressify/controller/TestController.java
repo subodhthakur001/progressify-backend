@@ -1,6 +1,6 @@
 package com.example.progressify.controller;
 
-import com.example.progressify.dto.MaiilTestRequestDTO;
+import com.example.progressify.dto.MailTestRequestDTO;
 import com.example.progressify.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/test")
 public class TestController {
 
+    private final EmailService emailService;
+
     @Autowired
-    private EmailService emailService;
+    public TestController(EmailService emailService){
+        this.emailService= emailService;
+    }
 
     @PostMapping("/testing")
     public String testing() {
@@ -21,9 +25,9 @@ public class TestController {
     }
 
     @PostMapping("/email-testing")
-    public String testMail(@RequestBody MaiilTestRequestDTO maiilTestRequestDTO){
+    public String testMail(@RequestBody MailTestRequestDTO mailTestRequestDTO){
         try{
-            emailService.sendEmail(maiilTestRequestDTO.getEmail(), maiilTestRequestDTO.getSubject(), maiilTestRequestDTO.getBody());
+            emailService.sendEmail(mailTestRequestDTO.getEmail(), mailTestRequestDTO.getSubject(), mailTestRequestDTO.getBody());
 
         }catch (Exception e){
 

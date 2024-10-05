@@ -44,7 +44,7 @@ public class WorkoutExerciseService {
             workout.setMuscle(muscle);
             workout = workoutRepository.save(workout);
 
-            Exercise_Workout exerciseWorkout = new Exercise_Workout();
+            ExerciseWorkout exerciseWorkout = new ExerciseWorkout();
             exerciseWorkout.setWorkout(workout);
             exerciseWorkout.setExercise(exercise);
 
@@ -66,7 +66,7 @@ public class WorkoutExerciseService {
 
         }else {
             Workout workout = workoutRepository.findById(workoutExerciseDTO.getWorkout_id()).orElseThrow(()->new IllegalArgumentException("Invalid workout id: " + workoutExerciseDTO.getWorkout_id()));
-            Exercise_Workout exerciseWorkout = new Exercise_Workout();
+            ExerciseWorkout exerciseWorkout = new ExerciseWorkout();
             exerciseWorkout.setWorkout(workout);
             exerciseWorkout.setExercise(exercise);
 
@@ -98,7 +98,7 @@ public class WorkoutExerciseService {
         }
         Workout workout = optionalWorkout.get();
 
-        List<Exercise_Workout> exerciseWorkouts = exerciseWorkoutRepository.findByWorkout(workout);
+        List<ExerciseWorkout> exerciseWorkouts = exerciseWorkoutRepository.findByWorkout(workout);
 
         List<WorkoutExerciseDTO> workoutExerciseDTOs = exerciseWorkouts.stream()
                 .map(exerciseWorkout -> {
