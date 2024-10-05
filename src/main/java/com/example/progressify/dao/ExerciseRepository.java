@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise , Long> {
     List<Exercise> findByMuscleId(Long id);
-    Exercise findByname(String name);
+    Exercise findByName(String name);
 }

@@ -12,7 +12,6 @@ import com.example.progressify.service.UserService;
 import com.example.progressify.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.boot.model.process.internal.UserTypeResolution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,22 +27,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/auth")
 @Slf4j
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private UserService userService;
+
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-//    public AuthController(){
-//
-//    }
+    public AuthController(AuthenticationManager authenticationManager,
+                          UserDetailsServiceImpl userDetailsService,
+                          UserService userService,
+                          UserRepository userRepository,
+                          JwtUtil jwtUtil){
+        this.authenticationManager= authenticationManager;
+        this.userDetailsService= userDetailsService;
+        this.userService= userService;
+        this.userRepository=userRepository;
+        this.jwtUtil= jwtUtil;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<SignUpResponse> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
@@ -57,7 +59,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            User dbUser = userRepository.findByUsername(loginRequest.getUsername());
+            User dbUser = userRepository.findByUserName(loginRequest.getUsername());
             Long userId = dbUser.getId();
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
             String jwt = jwtUtil.generateToken(userDetails.getUsername(),userId);

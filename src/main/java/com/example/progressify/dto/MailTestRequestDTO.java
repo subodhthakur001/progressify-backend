@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MaiilTestRequestDTO {
+public class MailTestRequestDTO {
     String email;
     String subject;
     String body;

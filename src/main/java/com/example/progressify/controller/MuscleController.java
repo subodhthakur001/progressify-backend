@@ -21,6 +21,7 @@ public class MuscleController {
 
     private final MuscleService muscleService;
 
+    @Autowired
     public MuscleController(MuscleService muscleService){
         this.muscleService = muscleService;
     }

@@ -1,6 +1,5 @@
 package com.example.progressify.service;
 
-import com.example.progressify.dto.ExerciseDTO;
 import com.example.progressify.dto.request.exercise.AddExerciseDTO;
 import com.example.progressify.model.Exercise;
 import com.example.progressify.model.Muscle;
@@ -27,7 +26,7 @@ public class ExerciseService {
 
     public Exercise addExercise(AddExerciseDTO addExerciseDTO){
 
-        if(exerciseRepository.findByname(addExerciseDTO.getName()) != null){
+        if(exerciseRepository.findByName(addExerciseDTO.getName()) != null){
             throw new DuplicateEntityException("exercise already exists with the name" + addExerciseDTO.getName());
         }
 

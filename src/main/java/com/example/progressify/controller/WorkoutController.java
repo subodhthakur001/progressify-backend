@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/workout")
 public class WorkoutController {
 
+    private final WorkoutExerciseService workoutExerciseService;
+
     @Autowired
-    private WorkoutExerciseService workoutExerciseService;
+    public WorkoutController(WorkoutExerciseService workoutExerciseService){
+        this.workoutExerciseService = workoutExerciseService;
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse> addWorkout(@RequestBody WorkoutExerciseDTO workoutExerciseDTO){

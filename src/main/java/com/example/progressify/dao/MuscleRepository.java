@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MuscleRepository extends JpaRepository<Muscle, Long> {
-    Muscle findByname(String name);
+    Muscle findByName(String name);
 }
