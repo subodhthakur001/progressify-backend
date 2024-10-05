@@ -33,8 +33,8 @@ public class MuscleService {
     }
 
     public Muscle updateMuscle(UpdateMuscleRequestDTO updateMuscleRequestDTO){
-        Muscle muscleToUpdate = muscleRepository.findById(updateMuscleRequestDTO.getMuscle_id())
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "muscle does not exists with id " + updateMuscleRequestDTO.getMuscle_id()));
+        Muscle muscleToUpdate = muscleRepository.findById(updateMuscleRequestDTO.getMuscleId())
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "muscle does not exists with id " + updateMuscleRequestDTO.getMuscleId()));
         if(updateMuscleRequestDTO.getName() != null){
             muscleToUpdate.setName(updateMuscleRequestDTO.getName());
         }

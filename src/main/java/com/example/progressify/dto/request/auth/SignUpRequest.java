@@ -2,7 +2,6 @@ package com.example.progressify.dto.request.auth;
 
 import com.example.progressify.constants.ValidationConstant;
 import com.example.progressify.model.Role;
-import jakarta.validation.Validation;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
