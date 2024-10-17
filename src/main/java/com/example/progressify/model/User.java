@@ -29,7 +29,6 @@ public class User {
     @Column(unique = true)
     private String username;
 
-    @Email(message = "Please provide valid email")
     @Column(unique = true)
     private String email;
 

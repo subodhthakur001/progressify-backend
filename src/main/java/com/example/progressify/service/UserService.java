@@ -22,7 +22,7 @@ public class UserService {
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public void saveNewUser(SignUpRequest signUpRequest) {
-        if (userRepository.findByUserName(signUpRequest.getUsername()) != null) {
+        if (userRepository.findByUsername(signUpRequest.getUsername()) != null) {
             throw new DuplicateEntityException("Username already exists: " + signUpRequest.getUsername());
         }
         try {

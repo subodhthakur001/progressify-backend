@@ -59,7 +59,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            User dbUser = userRepository.findByUserName(loginRequest.getUsername());
+            User dbUser = userRepository.findByUsername(loginRequest.getUsername());
             Long userId = dbUser.getId();
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
             String jwt = jwtUtil.generateToken(userDetails.getUsername(),userId);
