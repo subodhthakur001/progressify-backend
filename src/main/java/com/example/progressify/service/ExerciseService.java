@@ -1,12 +1,14 @@
 package com.example.progressify.service;
 
 import com.example.progressify.dto.request.exercise.AddExerciseDTO;
+import com.example.progressify.dto.request.exercise.UpdateExerciseDTO;
 import com.example.progressify.model.Exercise;
 import com.example.progressify.model.Muscle;
 import com.example.progressify.exception.DuplicateEntityException;
 import com.example.progressify.exception.ResourceNotFoundException;
 import com.example.progressify.dao.ExerciseRepository;
 import com.example.progressify.dao.MuscleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +46,21 @@ public class ExerciseService {
         exercise.setMuscle(muscle);
 
         return exerciseRepository.save(exercise);
+    }
+
+    public Exercise updateExercise(Long id, UpdateExerciseDTO updateExerciseDTO){
+        Exercise updatedExercise = exerciseRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("Exercise not found with id: " + id));
+        updatedExercise.setName(updateExerciseDTO.getName());
+        return exerciseRepository.save(updatedExercise);
+    }
+
+    public Exercise deleteExercise(Long id){
+        Exercise deletedExercise = exerciseRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("Exercise not found with id: " + id));
+        exerciseRepository.delete(deletedExercise);
+        return deletedExercise;
+
     }
 
 
