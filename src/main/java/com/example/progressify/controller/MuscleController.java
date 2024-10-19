@@ -47,4 +47,11 @@ public class MuscleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<ApiResponse> deleteMuscle(@PathVariable Long id){
+        Muscle deletedMuscle = muscleService.deleteMuscle(id);
+        ApiResponse response = new ApiResponse(ServiceConstant.DELETE_MESSAGE,deletedMuscle);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
 }

@@ -48,13 +48,14 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
+        long oneYearInMillis = 1000L * 60 * 60 * 24 * 365;
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
                 .header().empty().add("typ","JWT")
                 .and()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 20)) // 5 minutes expiration time
+                .expiration(new Date(System.currentTimeMillis() + oneYearInMillis))
                 .signWith(getSigningKey())
                 .compact();
     }
